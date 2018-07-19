@@ -1,0 +1,22 @@
+{
+  "name": "Shadowsocks-on-Heroku",
+  "description": "deploy Shadowsocks on Heroku.",
+  "keywords": ["Shadowsocks"],
+  "env": {
+    "SS_MODULE": {
+       "description": "mode of Shadowsocks, default server",
+       "value": "ss-server"
+     }, 
+    "SS_METHOD": {
+       "description": "encrypt method",
+       "value": "aes-256-cfb"
+     },
+     "SS_PWD": {
+       "description": "password",
+       "value": ""
+     }
+  },
+  "website": "https://github.com/koori69/shadowsocks-on-heroku",
+  "repository": "https://github.com/koori69/shadowsocks-on-heroku",
+  "stack": "container"
+ }
