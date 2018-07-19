@@ -9,6 +9,8 @@ ENV SS_DOWNLOAD_URL https://github.com/shadowsocks/shadowsocks-libev/releases/do
 ENV OBFS_DOWNLOAD_URL https://github.com/shadowsocks/simple-obfs.git
 ENV KCP_DOWNLOAD_URL https://github.com/xtaci/kcptun/releases/download/v${KCP_VERSION}/kcptun-linux-amd64-${KCP_VERSION}.tar.gz
 
+ADD entrypoint.sh /entrypoint.sh
+
 RUN apk upgrade --update \
     && apk add bash tzdata libsodium \
     && apk add --virtual .build-deps \
@@ -56,8 +58,7 @@ RUN apk upgrade --update \
         shadowsocks-libev-${SS_LIBEV_VERSION}.tar.gz \
         shadowsocks-libev-${SS_LIBEV_VERSION} \
         simple-obfs \
-        /var/cache/apk/*
-
-ADD entrypoint.sh /entrypoint.sh
+        /var/cache/apk/* \
+    && chmod +x /entrypoint.sh
 
 CMD ["/entrypoint.sh"]
