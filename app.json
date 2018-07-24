@@ -3,10 +3,6 @@
   "description": "deploy Shadowsocks on Heroku.",
   "keywords": ["Shadowsocks"],
   "env": {
-    "SS_MODULE": {
-       "description": "mode of Shadowsocks, default server",
-       "value": "ss-server"
-     }, 
     "SS_METHOD": {
        "description": "encrypt method",
        "value": "aes-256-cfb"
