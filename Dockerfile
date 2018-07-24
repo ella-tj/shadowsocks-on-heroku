@@ -1,4 +1,4 @@
-FROM alpine:3.8
+FROM heroku/heroku:16
 
 ARG TZ='Asia/Shanghai'
 
@@ -11,54 +11,10 @@ ENV KCP_DOWNLOAD_URL https://github.com/xtaci/kcptun/releases/download/v${KCP_VE
 
 ADD entrypoint.sh /entrypoint.sh
 
-RUN apk upgrade --update \
-    && apk add bash tzdata libsodium \
+RUN apt-get update \
+    && apt-get install python-pip \
     && apk add --virtual .build-deps \
-        autoconf \
-        automake \
-        xmlto \
-        build-base \
-        curl \
-        c-ares-dev \
-        libev-dev \
-        libtool \
-        linux-headers \
-        udns-dev \
-        libsodium-dev \
-        mbedtls-dev \
-        pcre-dev \
-        udns-dev \
-        tar \
-        git \
-    && curl -sSLO ${SS_DOWNLOAD_URL} \
-    && tar -zxf shadowsocks-libev-${SS_LIBEV_VERSION}.tar.gz \
-    && (cd shadowsocks-libev-${SS_LIBEV_VERSION} \
-    && ./configure --prefix=/usr --disable-documentation \
-    && make install) \
-    && git clone ${OBFS_DOWNLOAD_URL} \
-    && (cd simple-obfs \
-    && git submodule update --init --recursive \
-    && ./autogen.sh && ./configure --disable-documentation\
-    && make && make install) \
-    && curl -sSLO ${KCP_DOWNLOAD_URL} \
-    && tar -zxf kcptun-linux-amd64-${KCP_VERSION}.tar.gz \
-    && mv server_linux_amd64 /usr/bin/kcpserver \
-    && mv client_linux_amd64 /usr/bin/kcpclient \
-    && ln -sf /usr/share/zoneinfo/$TZ /etc/localtime \
-    && echo $TZ > /etc/timezone \
-    && runDeps="$( \
-        scanelf --needed --nobanner /usr/bin/ss-* /usr/local/bin/obfs-* \
-            | awk '{ gsub(/,/, "\nso:", $2); print "so:" $2 }' \
-            | xargs -r apk info --installed \
-            | sort -u \
-        )" \
-    && apk add --virtual .run-deps $runDeps \
-    && apk del .build-deps \
-    && rm -rf kcptun-linux-amd64-${KCP_VERSION}.tar.gz \
-        shadowsocks-libev-${SS_LIBEV_VERSION}.tar.gz \
-        shadowsocks-libev-${SS_LIBEV_VERSION} \
-        simple-obfs \
-        /var/cache/apk/* \
+    && pip install shadowsocks \
     && chmod +x /entrypoint.sh
 
 CMD ["/entrypoint.sh"]
