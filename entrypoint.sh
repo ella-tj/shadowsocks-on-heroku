@@ -20,5 +20,6 @@ echo "local_port":1080, >> /etc/shadowsocks-libev/config.json
 echo "password":"$SS_PWD", >> /etc/shadowsocks-libev/config.json
 echo "timeout":60, >> /etc/shadowsocks-libev/config.json
 echo "method":"$SS_METHOD", >> /etc/shadowsocks-libev/config.json
+echo } >> /etc/shadowsocks-libev/config.json
 
 /etc/init.d/shadowsocks-libev start 
