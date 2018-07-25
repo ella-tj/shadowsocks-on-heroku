@@ -9,4 +9,5 @@ RUN apt update \
     && chmod +x /entrypoint.sh \
     && chmod +x /etc/init.d/shadowsocks-libev
 
+USER docker 
 CMD ["/entrypoint.sh"]
