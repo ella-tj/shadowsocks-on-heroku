@@ -16,14 +16,14 @@ fi
 chmod +x v2ray
 chmod +x v2ctl
 
-if [ "$SS_METHOD" == "" ]; then
+if [ "$SS_METHOD" = "" ]; then
     echo -e "SS_METHOD is null, use aes-256-gcm for default."
     SS_METHOD="aes-256-gcm"
 else
     echo "cmd use $SS_METHOD"
 fi
 
-if [ "$SS_PWD" == "" ]; then
+if [ "$SS_PWD" = "" ]; then
     echo "Error:SS_PWD is null!"
     exit 1
 fi
