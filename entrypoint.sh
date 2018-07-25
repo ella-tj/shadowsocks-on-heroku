@@ -1,8 +1,8 @@
 #!/bin/bash
-su -c docker
+
 if [ "$SS_METHOD" == "" ]; then
-    echo -e "SS_METHOD is null, use aes-256-cfb for default."
-    SS_METHOD="aes-256-cfb"
+    echo -e "SS_METHOD is null, use aes-256-gcm for default."
+    SS_METHOD="aes-256-gcm"
 else
     echo -e "cmd use $SS_METHOD"
 fi
@@ -12,14 +12,8 @@ if [ "$SS_PWD" == "" ]; then
     exit 1
 fi
 
-# ssserver -p $PORT -k $SS_PWD -m $SS_METHOD
-echo { > /etc/shadowsocks-libev/config.json
-echo "server":"127.0.0.1", >> /etc/shadowsocks-libev/config.json
-echo "server_port":$PORT, >> /etc/shadowsocks-libev/config.json
-echo "local_port":1080, >> /etc/shadowsocks-libev/config.json
-echo "password":"$SS_PWD", >> /etc/shadowsocks-libev/config.json
-echo "timeout":60, >> /etc/shadowsocks-libev/config.json
-echo "method":"$SS_METHOD", >> /etc/shadowsocks-libev/config.json
-echo } >> /etc/shadowsocks-libev/config.json
+sed -i "s/6666/$PORT/g" config.json
+sed -i "s/SSMETHOD/$SS_METHOD/g" config.json
+sed -i "s/PWD/$SS_PWD/g" config.json
 
-sudo /etc/init.d/shadowsocks-libev start 
+./v2ray
