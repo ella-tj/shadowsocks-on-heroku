@@ -5,7 +5,7 @@
   "env": {
     "SS_METHOD": {
        "description": "encrypt method",
-       "value": "aes-256-cfb"
+       "value": "aes-256-gcm"
      },
      "SS_PWD": {
        "description": "password",
