@@ -6,9 +6,11 @@
         "port": 6666, 
         "protocol": "shadowsocks", 
         "settings": {
+            "email": "kise.ryo@aol.com",
             "method": "SSMETHOD", 
             "ota": true, 
-            "password": "PWD"
+            "password": "PWD",
+            "network": "tcp"
         }
     }, 
     "outbound": {
