@@ -1,4 +1,4 @@
-FROM heroku/heroku:16
+FROM ubuntu:18.04
 
 ADD entrypoint.sh /entrypoint.sh
 
