@@ -1,4 +1,3 @@
-#!/bin/bash
 cd /v2raybin
 if [ "$VER" = "latest" ]; then
   wget http://storage.googleapis.com/v2ray-docker/v2ray 
