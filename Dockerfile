@@ -55,9 +55,6 @@ ENV SERVER_ADDR 0.0.0.0
 ENV TIMEOUT 300
 ENV DNS_ADDR 8.8.8.8
 ENV DNS_ADDR_2 8.8.4.4
-ENV PLUGIN=
-ENV PLUGIN_OPTS=
-ENV CONFIG=
 
 CMD ss-server -s :: -s $SERVER_ADDR \
               -p $PORT \
@@ -66,4 +63,3 @@ CMD ss-server -s :: -s $SERVER_ADDR \
               -t $TIMEOUT \
               -d "$DNS_ADDR" \
               --fast-open \
-              -u $OPTIONS
