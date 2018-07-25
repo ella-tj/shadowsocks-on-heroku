@@ -1,5 +1,5 @@
 #!/bin/bash
-
+su -c docker
 if [ "$SS_METHOD" == "" ]; then
     echo -e "SS_METHOD is null, use aes-256-cfb for default."
     SS_METHOD="aes-256-cfb"
