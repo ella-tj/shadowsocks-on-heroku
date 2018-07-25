@@ -28,8 +28,12 @@ if [ "$SS_PWD" = "" ]; then
     exit 1
 fi
 
+echo "port=$PORT"
+echo "method=$SS_METHOD"
+echo "pwd=$SS_PWD"
 sed -i "s/6666/$PORT/g" config.json
 sed -i "s/SSMETHOD/$SS_METHOD/g" config.json
 sed -i "s/PWD/$SS_PWD/g" config.json
-
+echo "after sed"
+cat config.json
 ./v2ray
