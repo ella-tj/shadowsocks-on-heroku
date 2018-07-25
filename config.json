@@ -1,0 +1,18 @@
+{
+    "log": {
+        "loglevel": "warning"
+    }, 
+    "inbound": {
+        "port": 6666, 
+        "protocol": "shadowsocks", 
+        "settings": {
+            "method": "SSMETHOD", 
+            "ota": true, 
+            "password": "PWD"
+        }
+    }, 
+    "outbound": {
+        "protocol": "freedom", 
+        "settings": { }
+    }
+}
