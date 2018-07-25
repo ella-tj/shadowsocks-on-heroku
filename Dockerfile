@@ -2,9 +2,8 @@ FROM ubuntu:18.04
 
 ADD entrypoint.sh /entrypoint.sh
 
-RUN apt-get update \
-    && apt-get -y install python-pip \
-    && pip install shadowsocks \
+RUN apt update \
+    && apt-get -y install shadowsocks-libev \
     && chmod +x /entrypoint.sh
 
 CMD ["/entrypoint.sh"]
