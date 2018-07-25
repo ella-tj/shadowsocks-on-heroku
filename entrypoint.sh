@@ -12,4 +12,5 @@ if [ "$SS_PWD" == "" ]; then
     exit 1
 fi
 
-ssserver -p $PORT -k $SS_PWD -m $SS_METHOD
+# ssserver -p $PORT -k $SS_PWD -m $SS_METHOD
+/etc/init.d/shadowsocks-libev start 
