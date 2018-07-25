@@ -1,13 +1,69 @@
-FROM ubuntu:18.04
+FROM alpine
 
-ADD entrypoint.sh /entrypoint.sh
-RUN apt update \
-    && apt-get install -y --no-install-recommends apt-utils \
-    && apt -y install sudo \
-    && useradd -m docker && echo "docker:docker" | chpasswd && adduser docker sudo \
-    && apt -y install shadowsocks-libev \
-    && chmod +x /entrypoint.sh \
-    && chmod +x /etc/init.d/shadowsocks-libev
+ARG SS_VER=3.2.0
+ARG SS_OBFS_VER=0.0.5
 
-USER docker 
-CMD ["/entrypoint.sh"]
+RUN set -ex && \
+    apk add --no-cache udns && \
+    apk add --no-cache --virtual .build-deps \
+                                git \
+                                autoconf \
+                                automake \
+                                make \
+                                build-base \
+                                curl \
+                                libev-dev \
+                                c-ares-dev \
+                                libtool \
+                                linux-headers \
+                                libsodium-dev \
+                                mbedtls-dev \
+                                pcre-dev \
+                                tar \
+                                udns-dev && \
+
+    cd /tmp/ && \
+    git clone https://github.com/shadowsocks/shadowsocks-libev.git && \
+    cd shadowsocks-libev && \
+    git checkout v$SS_VER && \
+    git submodule update --init --recursive && \
+    ./autogen.sh && \
+    ./configure --prefix=/usr --disable-documentation && \
+    make install && \
+    cd /tmp/ && \
+    git clone https://github.com/shadowsocks/simple-obfs.git shadowsocks-obfs && \
+    cd shadowsocks-obfs && \
+    git checkout v$SS_OBFS_VER && \
+    git submodule update --init --recursive && \
+    ./autogen.sh && \
+    ./configure --prefix=/usr --disable-documentation && \
+    make install && \
+    cd .. && \
+
+    runDeps="$( \
+        scanelf --needed --nobanner /usr/bin/ss-* \
+            | awk '{ gsub(/,/, "\nso:", $2); print "so:" $2 }' \
+            | xargs -r apk info --installed \
+            | sort -u \
+    )" && \
+    apk add --no-cache --virtual .run-deps $runDeps && \
+    apk del .build-deps && \
+    rm -rf /tmp/*
+
+
+ENV SERVER_ADDR 0.0.0.0
+ENV TIMEOUT 300
+ENV DNS_ADDR 8.8.8.8
+ENV DNS_ADDR_2 8.8.4.4
+ENV PLUGIN=
+ENV PLUGIN_OPTS=
+ENV CONFIG=
+
+CMD ss-server -s :: -s $SERVER_ADDR \
+              -p $PORT \
+              -k "$SS_PWD" \
+              -m "$SS_METHOD" \
+              -t $TIMEOUT \
+              -d "$DNS_ADDR" \
+              --fast-open \
+              -u $OPTIONS
